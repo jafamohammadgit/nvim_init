@@ -1,12 +1,12 @@
 call plug#begin('~/.vim/plugged')
-
 Plug 'jiangmiao/auto-pairs'
 Plug 'liangxianzhe/oh-my-vim'
 Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdcommenter'
-Plug 'vim-auto-save'
+" Plug 'vim-auto-save'
+Plug '907th/vim-auto-save'
 Plug 'morhetz/gruvbox'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'chriskempson/base16-vim'
@@ -18,11 +18,15 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mattn/emmet-vim'
-
+Plug 'VundleVim/Vundle.vim'
+Plug 'python-mode/python-mode'
+Plug 'sansyrox/vim-python-virtualenv'
+Plug 'severin-lemaignan/vim-minimap'
+ 
 Plug 'tpope/vim-surround'
 
 Plug 'ryanoasis/vim-devicons'
-
+Plug 'jmcantrell/vim-virtualenv'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-syntastic/syntastic'
 Plug 'prettier/vim-prettier', {
@@ -49,8 +53,9 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
 Plug 'honza/vim-snippets'
 
-Plug 'ycm-core/YouCompleteMe'
-
+" Plug 'ycm-core/YouCompleteMe'
+Plug 'wfxr/minimap.vim'
+Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
 
 call plug#end()
 let g:python_highlight_all = 1
@@ -73,8 +78,9 @@ let base16colorspace=256
 set background=dark " for the dark version
 colorscheme gruvbox
 " colorscheme aurora
-
-
+" ============virtualenv ==================
+" let g:virtualenv_directory = '/home/mohammad/Desktop/Programming/Python/crawl_craigslist/venv/bin/activate'
+let g:python3_host_prog='/usr/bin/python3'
 " ============ cursor style ===============
  highlight Cursor guifg=white guibg=orange
  highlight iCursor guifg=white guibg=red
@@ -135,8 +141,10 @@ let g:airline_powerline_fonts = 1
 
 " ============ ale =============
 let g:ale_fix_on_save = 1
-let g:ale_linters = { 'javascript': ['eslint'], 'typescript': ['tslint'], 'python': ['pylint'] }
-let g:ale_fixers = { 'javascript': ['prettier'], 'python': ['black']}
+" let g:ale_linters = { 'javascript': ['eslint'], 'typescript': ['tslint'], 'python': ['pylint'] }
+" let g:ale_fixers = { 'javascript': ['prettier'], 'python': ['black']}
+let g:ale_linters = {'python': ['pylint']}
+let g:ale_fixers = {'python': ['black']}
 
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
@@ -323,36 +331,36 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-let g:ycm_python_interpreter_path = '/usr/bin/python3.8'
-let g:ycm_python_sys_path = ['/usr/lib/python3.8']
-let g:ycm_extra_conf_vim_data = [
-  \  'g:ycm_python_interpreter_path',
-  \  'g:ycm_python_sys_path'
-  \]
-let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
-
-let g:ycm_language_server = 
-  \ [ 
-  \   {
-  \     'name': 'yaml',
-  \     'cmdline': [ '/path/to/yaml/server/yaml-language-server', '--stdio' ],
-  \     'filetypes': [ 'yaml' ]
-  \   },
-  \   {
-  \     'name': 'rust',
-  \     'cmdline': [ 'ra_lsp_server' ],
-  \     'filetypes': [ 'rust' ],
-  \     'project_root_files': [ 'Cargo.toml' ]
-  \   },
-  \   {
-  \     'name': 'godot',
-  \     'filetypes': [ 'gdscript' ],
-  \     'port': 6008,
-  \     'project_root_files': [ 'project.godot' ]
-  \    }
-  \ ]
+" let g:ycm_python_interpreter_path = '/usr/bin/python3.8'
+" let g:ycm_python_sys_path = ['/usr/lib/python3.8']
+" let g:ycm_extra_conf_vim_data = [
+"   \  'g:ycm_python_interpreter_path',
+"   \  'g:ycm_python_sys_path'
+"   \]
+" let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
+" 
+" let g:ycm_language_server = 
+"   \ [ 
+"   \   {
+"   \     'name': 'yaml',
+"   \     'cmdline': [ '/path/to/yaml/server/yaml-language-server', '--stdio' ],
+"   \     'filetypes': [ 'yaml' ]
+"   \   },
+"   \   {
+"   \     'name': 'rust',
+"   \     'cmdline': [ 'ra_lsp_server' ],
+"   \     'filetypes': [ 'rust' ],
+"   \     'project_root_files': [ 'Cargo.toml' ]
+"   \   },
+"   \   {
+"   \     'name': 'godot',
+"   \     'filetypes': [ 'gdscript' ],
+"   \     'port': 6008,
+"   \     'project_root_files': [ 'project.godot' ]
+"   \    }
+"   \ ]
 set signcolumn=no
-highlight YcmErrorLine guibg=#3f0000
+" highlight YcmErrorLine guibg=#6f0000
 
 " syntax
 syntax on
@@ -368,8 +376,7 @@ set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-
-" mouse
+ " mouse
 set mouse=a
 
 let g:syntastic_error_symbol = '✘'
@@ -392,3 +399,64 @@ let g:airline#extensions#hunks#non_zero_only = 1
 
 " auto save
 " let g:auto_save = 1
+"
+"                                        new new  new new
+filetype off                  " required
+set rtp+=~/.vim/bundle/Vundle.vim
+filetype plugin indent on    " required
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+" Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+" Plugin 'tpope/vim-fugitive'
+"
+"
+" -------------minmap---------------------
+let g:minimap_width = 10
+let g:minimap_auto_start = 1
+let g:minimap_auto_start_win_enter = 1
+let g:minimap_highlight_search = 1
+let g:minimap_git_colors = 1
+let g:minimap_cursor_color = 'MinimapCurrentLine'
+" auto save
+let g:auto_save = 1 
+let g:auto_save_events = ["InsertLeave", "TextChanged"]
