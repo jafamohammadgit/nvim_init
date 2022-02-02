@@ -1,11 +1,15 @@
 call plug#begin('~/.vim/plugged')
+" for debug code
+Plug 'vim-scripts/Conque-Shell'
+Plug 'puremourning/vimspector'
+Plug 'bling/vim-airline'
+Plug 'frazrepo/vim-rainbow'
 Plug 'jiangmiao/auto-pairs'
 Plug 'liangxianzhe/oh-my-vim'
 Plug 'preservim/nerdtree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdcommenter'
-" Plug 'vim-auto-save'
 Plug '907th/vim-auto-save'
 Plug 'morhetz/gruvbox'
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -22,9 +26,7 @@ Plug 'VundleVim/Vundle.vim'
 Plug 'python-mode/python-mode'
 Plug 'sansyrox/vim-python-virtualenv'
 Plug 'severin-lemaignan/vim-minimap'
- 
 Plug 'tpope/vim-surround'
-
 Plug 'ryanoasis/vim-devicons'
 Plug 'jmcantrell/vim-virtualenv'
 Plug 'vim-airline/vim-airline'
@@ -32,32 +34,21 @@ Plug 'vim-syntastic/syntastic'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn  install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-
 Plug 'dense-analysis/ale'
-
 Plug 'mg979/vim-visual-multi'
-
 Plug 'easymotion/vim-easymotion'
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neoclide/coc.nvim', { 'branch': 'master', 'do': 'yarn install --frozen-lockfile' }
 Plug 'neoclide/coc.nvim'
-
 Plug 'christoomey/vim-tmux-navigator'
-
 Plug 'Yggdroot/indentLine'
-
 Plug 'sheerun/vim-polyglot'
-
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
-
 Plug 'honza/vim-snippets'
-
-" Plug 'ycm-core/YouCompleteMe'
 Plug 'wfxr/minimap.vim'
 Plug 'wfxr/minimap.vim', {'do': ':!cargo install --locked code-minimap'}
-
 call plug#end()
+
 let g:python_highlight_all = 1
 
 set number
@@ -71,49 +62,27 @@ inoremap jk <ESC>
 
 set termguicolors
 let base16colorspace=256
-" colorscheme base16-default-dark
-" let g:rehash256 = 1
-" colorscheme onehalfdark
-" colorscheme dracula
 set background=dark " for the dark version
 colorscheme gruvbox
-" colorscheme aurora
 " ============virtualenv ==================
-" let g:virtualenv_directory = '/home/mohammad/Desktop/Programming/Python/crawl_craigslist/venv/bin/activate'
 let g:python3_host_prog='/usr/bin/python3'
-" ============ cursor style ===============
- highlight Cursor guifg=white guibg=orange
- highlight iCursor guifg=white guibg=red
- set guicursor=n-v-c:block-Cursor
- set guicursor+=i:ver100-iCursor
- set guicursor+=n-v-c:blinkon0
- set guicursor+=i:blinkwait10
-
- set guicursor=i:ver40-iCursor
-
 
 " ============ highlight bad workspace ==============
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /\s\+$/
 highlight BadWhitespace ctermbg=red guibg=darkred
-
 
 " ============ nerdtree =================
 map <C-i> :NERDTreeToggle<CR>
-
 " Start NERDTree when Vim is started without file arguments.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
 " Start NERDTree when Vim starts with a directory argument.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-
 " close nerdtree after a file has been opened
 let NERDTreeQuitOnOpen=1
-
 " ignore node_modules folder
 let g:NERDTreeIgnore = ['^node_modules$']
-
 
 "============= fzf =================
 nnoremap <C-p> :Files<CR>
@@ -122,30 +91,24 @@ nnoremap <C-b> :Buffers <CًًR>
 
 "============= nerdcommenter =============
 filetype plugin on
-
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
-
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
-
 " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDCommentEmptyLines = 1
-
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-
 " ============ airline ================
-let g:airline_powerline_fonts = 1
-
+let g:airline_powerline_fonts = 0
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#formatter = 'default'
 " ============ ale =============
 let g:ale_fix_on_save = 1
-" let g:ale_linters = { 'javascript': ['eslint'], 'typescript': ['tslint'], 'python': ['pylint'] }
-" let g:ale_fixers = { 'javascript': ['prettier'], 'python': ['black']}
-let g:ale_linters = {'python': ['pylint']}
-let g:ale_fixers = {'python': ['black']}
-
+let g:ale_linters = { 'javascript': ['eslint'], 'typescript': ['tslint'], 'python': ['pylint'] }
+let g:ale_fixers = { 'javascript': ['prettier'], 'python': ['black']}
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '⚠'
 highlight ALEErrorSign ctermbg=NONE ctermfg=red
@@ -167,24 +130,18 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 " =========== indentLine ===============
 let g:indentLine_char = '|'
 
-
 " =========== coc.nvim ==================
 set hidden
-
 " Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
-
 " Give more space for displaying messages.
 set cmdheight=2
-
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
 set updatetime=300
-
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
-
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
 if has("patch-8.1.1564")
@@ -218,7 +175,7 @@ endif
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
 " inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-"                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+"                               \: '\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
@@ -310,7 +267,7 @@ xmap <silent> <C-s> <Plug>(coc-range-select)
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
 " provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 
 " Mappings for CoCList
@@ -331,132 +288,51 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-" let g:ycm_python_interpreter_path = '/usr/bin/python3.8'
-" let g:ycm_python_sys_path = ['/usr/lib/python3.8']
-" let g:ycm_extra_conf_vim_data = [
-"   \  'g:ycm_python_interpreter_path',
-"   \  'g:ycm_python_sys_path'
-"   \]
-" let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
-" 
-" let g:ycm_language_server = 
-"   \ [ 
-"   \   {
-"   \     'name': 'yaml',
-"   \     'cmdline': [ '/path/to/yaml/server/yaml-language-server', '--stdio' ],
-"   \     'filetypes': [ 'yaml' ]
-"   \   },
-"   \   {
-"   \     'name': 'rust',
-"   \     'cmdline': [ 'ra_lsp_server' ],
-"   \     'filetypes': [ 'rust' ],
-"   \     'project_root_files': [ 'Cargo.toml' ]
-"   \   },
-"   \   {
-"   \     'name': 'godot',
-"   \     'filetypes': [ 'gdscript' ],
-"   \     'port': 6008,
-"   \     'project_root_files': [ 'project.godot' ]
-"   \    }
-"   \ ]
-set signcolumn=no
-" highlight YcmErrorLine guibg=#6f0000
-
-" syntax
-syntax on
-set nocompatible
-syntax on
-set ruler
-set number
-set showcmd
-set incsearch
-set hlsearch
-set backspace=indent,eol,start
-set expandtab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
- " mouse
+"-------------- finish coc nvim-------------------------
 set mouse=a
 
-let g:syntastic_error_symbol = '✘'
-let g:syntastic_warning_symbol = "▲"
-augroup mySyntastic
-  au!
-  au FileType tex let b:syntastic_mode = "passive"
-augroup END
+" -------------curor color ----------------------------
+"  highlight Cursor guifg=white guibg=black
+highlight iCursor guifg=white guibg=black
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:ver100-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkwait10
+" -------------finish cursor-------------------
+"" set sensible highlight matches that don't obscure the text
+:highlight MatchParen cterm=underline ctermbg=black ctermfg=NONE
+:highlight MatchParen gui=underline guibg=black guifg=NONE
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:rainbow_active = 1
+au FileType c,cpp,objc,objcpp call rainbow#load()
+let g:rainbow_load_separately = [
+    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ [ '*.tex' , [['(', ')'], ['\[', '\]']] ],
+    \ [ '*.cpp' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ],
+    \ ]
 
-let g:syntastic_python_checkers = ['pylint']
-let g:airline#extensions#hunks#non_zero_only = 1
+let g:rainbow_guifgs = ['RoyalBlue3', 'DarkOrange3', 'DarkOrchid3', 'FireBrick']
+let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+" :AirlineTheme base16_atelierlakeside
+let g:airlien_theme='base16_atelierlakeside'
 
-" auto save
-" let g:auto_save = 1
+" code debugger
 "
-"                                        new new  new new
-filetype off                  " required
-set rtp+=~/.vim/bundle/Vundle.vim
-filetype plugin indent on    " required
-set nocompatible              " be iMproved, required
-filetype off                  " required
+let g:vimspector_enable_mappings = 'HUMAN'
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" terminal for nvim
+:nnoremap <S-w> :q!<CR>
+:nnoremap <S-t> :ConqueTermSplit bash<CR>
+" THis is for temrinal
+let g:airline#extensions#tabline#ignore_bufadd_pat =
+  \ 'gundo|undotree|vimfiler|tagbar|nerd_tree|startify|!'
+map <leader>p :w<CR>:!python3 %<CR>
+function! Termpy()
+  exec winheight(0)/4."split" | terminal python3 %
+endfunction
+nnoremap <C-R> :call Termpy() <CR>
 
-" let Vundle manage Vundle, required
-" Plugin 'VundleVim/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-" Plugin 'tpope/vim-fugitive'
-"
-"
-" -------------minmap---------------------
-let g:minimap_width = 10
-let g:minimap_auto_start = 1
-let g:minimap_auto_start_win_enter = 1
-let g:minimap_highlight_search = 1
-let g:minimap_git_colors = 1
-let g:minimap_cursor_color = 'MinimapCurrentLine'
-" auto save
-let g:auto_save = 1 
-let g:auto_save_events = ["InsertLeave", "TextChanged"]
+" for insert line below
+nnoremap <Enter> i<Enter><Esc>k$
